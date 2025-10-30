@@ -32,6 +32,7 @@
   --warning: oklch(0.7 0.1 100);
   --success: oklch(0.7 0.1 160);
   --info: oklch(0.7 0.1 260);
+  font-size: 16px;
 }
 body.light {
   /* hsl (fallback color) */
@@ -74,6 +75,7 @@ body {
   background-color: var(--bg);
   color: var(--text);
   transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: 1rem;
 }
 
 /* Dark mode class for html element */
@@ -142,4 +144,25 @@ body {
   --warning: oklch(0.5 0.1 100);
   --success: oklch(0.5 0.1 160);
   --info: oklch(0.5 0.1 260);
+}
+
+@media (max-width: 1200px) {
+  html {
+    font-size: 15px;
+  }
+}
+@media (max-width: 992px) {
+  html {
+    font-size: 14px;
+  }
+}
+@media (max-width: 768px) {
+  html {
+    font-size: 13px;
+  }
+}
+@media (max-width: 576px) {
+  html {
+    font-size: 12px;
+  }
 }
