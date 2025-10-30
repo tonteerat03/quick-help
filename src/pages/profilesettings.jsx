@@ -1,30 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
-import { updateUser } from '../data/userdata';
-import './css/profilesettings.css';
+import React, { useState, useEffect } from "react";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Form,
+  Button,
+  Alert,
+} from "react-bootstrap";
+import { updateUser } from "../data/userdata";
+import "./css/profilesettings.css";
 
 const ProfileSettings = () => {
   const [user, setUser] = useState(null);
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    username: '',
-    email: '',
-    avatar: '',
+    username: "",
+    email: "",
+    avatar: "",
   });
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   useEffect(() => {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
     if (currentUser) {
       setUser(currentUser);
       setFormData({
-        firstName: currentUser.firstName,
-        lastName: currentUser.lastName,
-        username: currentUser.username,
-        email: currentUser.email,
-        avatar: currentUser.avatar,
+        username: currentUser.username || "",
+        email: currentUser.email || "",
+        avatar: currentUser.avatar || "",
       });
     }
   }, []);
@@ -35,20 +39,20 @@ const ProfileSettings = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
 
-    if (!formData.firstName || !formData.lastName || !formData.username || !formData.email) {
-      setError('Please fill in all required fields');
+    if (!formData.username || !formData.email) {
+      setError("Please fill in all required fields");
       return;
     }
 
     try {
       const updatedUser = updateUser(user.id, formData);
-      setSuccess('Profile updated successfully!');
+      setSuccess("Profile updated successfully!");
       setUser(updatedUser);
     } catch (err) {
-      setError('Failed to update profile. Please try again.');
+      setError(err?.message || "Failed to update profile. Please try again.");
     }
   };
 
@@ -65,40 +69,15 @@ const ProfileSettings = () => {
               <Card.Body>
                 <div className="text-center mb-4">
                   <h2 className="profile-settings-title">Profile Settings</h2>
-                  <p className="profile-settings-subtitle">Manage your account details</p>
+                  <p className="profile-settings-subtitle">
+                    Manage your account details
+                  </p>
                 </div>
 
                 {error && <Alert variant="danger">{error}</Alert>}
                 {success && <Alert variant="success">{success}</Alert>}
 
                 <Form onSubmit={handleSubmit}>
-                  <Row>
-                    <Col md={6}>
-                      <Form.Group className="mb-3">
-                        <Form.Label>First Name</Form.Label>
-                        <Form.Control
-                          type="text"
-                          name="firstName"
-                          value={formData.firstName}
-                          onChange={handleChange}
-                          required
-                        />
-                      </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                      <Form.Group className="mb-3">
-                        <Form.Label>Last Name</Form.Label>
-                        <Form.Control
-                          type="text"
-                          name="lastName"
-                          value={formData.lastName}
-                          onChange={handleChange}
-                          required
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-
                   <Form.Group className="mb-3">
                     <Form.Label>Username</Form.Label>
                     <Form.Control

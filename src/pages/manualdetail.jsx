@@ -68,7 +68,10 @@ const ManualDetail = () => {
 
     const manualData = {
       ...newManual,
-      id: Math.max(...MANUAL_DATA.map((m) => m.id)) + 1,
+      id:
+        MANUAL_DATA.length > 0
+          ? Math.max(...MANUAL_DATA.map((m) => m.id)) + 1
+          : 1,
       thumbnail:
         "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=200&fit=crop",
       views: 0,
@@ -77,11 +80,17 @@ const ManualDetail = () => {
       createdAt: new Date().toISOString(),
       author: {
         id: currentUser.id,
-        name: `${currentUser.firstName} ${currentUser.lastName}`,
-        avatar: currentUser.avatar,
+        name:
+          currentUser.username ||
+          `${currentUser.firstName || ""} ${currentUser.lastName || ""}`.trim(),
+        avatar:
+          currentUser.avatar || "https://via.placeholder.com/40x40?text=U",
         role: currentUser.role,
       },
-      tags: newManual.tags.split(",").map((tag) => tag.trim()),
+      tags: newManual.tags
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter(Boolean),
     };
 
     MANUAL_DATA.push(manualData);
@@ -237,7 +246,9 @@ const ManualDetail = () => {
       <div className="manual-author-section">
         <div className="author-info">
           <img
-            src={manual.author.avatar}
+            src={
+              manual.author.avatar || "https://via.placeholder.com/80x80?text=U"
+            }
             alt={manual.author.name}
             className="author-avatar-large"
           />

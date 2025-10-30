@@ -1,5 +1,6 @@
 import { Button } from "react-bootstrap";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./css/feeds.css";
 import { MANUAL_DATA } from "../data/manualdata";
 
@@ -7,6 +8,15 @@ const CATEGORY_OPTIONS = ["Most View", "Most Like", "Recent"];
 
 const Feeds = () => {
   const [selectedCategory, setSelectedCategory] = useState("Most View");
+  const [currentUser, setCurrentUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = localStorage.getItem("currentUser");
+    if (user) {
+      setCurrentUser(JSON.parse(user));
+    }
+  }, []);
 
   const sortedFeeds = useMemo(() => {
     const feeds = [...MANUAL_DATA];
@@ -24,13 +34,22 @@ const Feeds = () => {
   }, [selectedCategory]);
 
   const handleCardClick = (manualId) => {
-    // Navigate to manual detail page
-    window.location.href = `/manual/${manualId}`;
+    navigate(`/manual/${manualId}`);
   };
 
   const handleCreateManual = () => {
-    // Navigate to create manual page
-    window.location.href = "/manual/create";
+    const stored = localStorage.getItem("currentUser");
+    if (!stored) {
+      navigate(`/login`);
+      return;
+    }
+    const user = JSON.parse(stored);
+    if (user.role !== "admin") {
+      alert("Only admins can create manuals.");
+      return;
+    }
+    // No dedicated create page exists; send admins to dashboard for now
+    navigate(`/dashboard`);
   };
 
   return (

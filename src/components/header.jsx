@@ -31,6 +31,33 @@ const Header = () => {
     setCurrentUser(user);
   }, []);
 
+  useEffect(() => {
+    // Check for current user initially and when storage changes
+    const readUser = () => {
+      try {
+        const u = JSON.parse(localStorage.getItem("currentUser"));
+        setCurrentUser(u || null);
+      } catch {
+        setCurrentUser(null);
+      }
+    };
+
+    readUser();
+
+    const onStorage = (e) => {
+      if (e.key === "currentUser" || e.key === "users") {
+        readUser();
+      }
+    };
+    window.addEventListener("storage", onStorage);
+
+    const interval = setInterval(readUser, 1000);
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      clearInterval(interval);
+    };
+  }, []);
+
   const toggleDarkMode = () => {
     const newDarkMode = !isDarkMode;
     setIsDarkMode(newDarkMode);
@@ -90,11 +117,21 @@ const Header = () => {
               <Dropdown>
                 <Dropdown.Toggle variant="transparent" id="dropdown-basic">
                   <img
-                    src={currentUser.avatar}
-                    alt={currentUser.firstName}
+                    src={
+                      currentUser.avatar ||
+                      "https://via.placeholder.com/40x40?text=U"
+                    }
+                    alt={
+                      currentUser.username || currentUser.firstName || "User"
+                    }
                     className="user-avatar-small"
+                    onError={(e) => {
+                      e.target.src = "https://via.placeholder.com/40x40?text=U";
+                    }}
                   />
-                  <span>{currentUser.firstName}</span>
+                  <span>
+                    {currentUser.username || currentUser.firstName || "User"}
+                  </span>
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>

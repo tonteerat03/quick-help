@@ -87,7 +87,8 @@ export const authenticateUser = (email, password) => {
 };
 
 export const addUser = (userData) => {
-  const newId = USER_DATA.length > 0 ? Math.max(...USER_DATA.map((u) => u.id)) + 1 : 1;
+  const newId =
+    USER_DATA.length > 0 ? Math.max(...USER_DATA.map((u) => u.id)) + 1 : 1;
   const newUser = {
     id: newId,
     ...userData,
@@ -109,17 +110,44 @@ export const addUser = (userData) => {
   return newUser;
 };
 
-export const updateUser = (userId, updatedData) => {
-  const updatedUsers = USER_DATA.map((user) =>
-    user.id === userId ? { ...user, ...updatedData } : user
-  );
-  updateUsersInStorage(updatedUsers);
-  const updatedUser = updatedUsers.find(user => user.id === userId);
-  if (localStorage.getItem("currentUser")) {
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    if (currentUser.id === userId) {
-      localStorage.setItem("currentUser", JSON.stringify(updatedUser));
-    }
+export const updateUser = (userId, updates) => {
+  const id = parseInt(userId);
+  const idx = USER_DATA.findIndex((u) => u.id === id);
+  if (idx === -1) throw new Error("User not found");
+
+  // Uniqueness checks
+  if (updates.email) {
+    const emailTaken = USER_DATA.some(
+      (u) =>
+        u.id !== id && u.email?.toLowerCase() === updates.email.toLowerCase()
+    );
+    if (emailTaken) throw new Error("Email already in use");
   }
-  return updatedUser;
+  if (updates.username) {
+    const usernameTaken = USER_DATA.some(
+      (u) =>
+        u.id !== id &&
+        u.username?.toLowerCase() === updates.username.toLowerCase()
+    );
+    if (usernameTaken) throw new Error("Username already in use");
+  }
+
+  const updated = { ...USER_DATA[idx], ...updates };
+  const newUsers = USER_DATA.map((u) => (u.id === id ? updated : u));
+  updateUsersInStorage(newUsers);
+
+  // Refresh currentUser copy if needed
+  try {
+    const stored = localStorage.getItem("currentUser");
+    if (stored) {
+      const cur = JSON.parse(stored);
+      if (cur.id === id) {
+        localStorage.setItem("currentUser", JSON.stringify(updated));
+      }
+    }
+  } catch (_) {
+    // ignore
+  }
+
+  return updated;
 };

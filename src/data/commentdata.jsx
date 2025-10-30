@@ -95,7 +95,10 @@ export const getCommentsByManualId = (manualId) => {
 };
 
 export const addComment = (commentData) => {
-  const newId = Math.max(...COMMENT_DATA.map((c) => c.id)) + 1;
+  const newId =
+    COMMENT_DATA.length > 0
+      ? Math.max(...COMMENT_DATA.map((c) => c.id)) + 1
+      : 1;
   const newComment = {
     id: newId,
     ...commentData,
@@ -111,7 +114,10 @@ export const addComment = (commentData) => {
 export const addReply = (commentId, replyData) => {
   const comment = COMMENT_DATA.find((c) => c.id === commentId);
   if (comment) {
-    const newReplyId = Math.max(...comment.replies.map((r) => r.id)) + 1;
+    const newReplyId =
+      comment.replies.length > 0
+        ? Math.max(...comment.replies.map((r) => r.id)) + 1
+        : 1;
     const newReply = {
       id: newReplyId,
       ...replyData,
