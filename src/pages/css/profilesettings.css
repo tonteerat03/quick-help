@@ -1,0 +1,22 @@
+.profile-settings-container {
+  padding: 40px 0;
+}
+
+.profile-settings-card {
+  background: var(--bg-light);
+  padding: 30px;
+  border-radius: 12px;
+}
+
+.profile-settings-title {
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+
+.profile-settings-subtitle {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  color: var(--text-muted);
+}

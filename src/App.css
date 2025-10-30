@@ -1,0 +1,145 @@
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap");
+@import "tailwindcss";
+
+:root {
+  /* hsl (fallback color) */
+  --bg-dark: hsl(245 90% 4%);
+  --bg: hsl(242 62% 8%);
+  --bg-light: hsl(239 42% 12%);
+  --text: hsl(235 100% 100%);
+  --text-muted: hsl(235 71% 79%);
+  --highlight: hsl(237 27% 48%);
+  --border: hsl(239 33% 36%);
+  --border-muted: hsl(242 44% 26%);
+  --primary: hsl(235 71% 79%);
+  --secondary: hsl(51 42% 57%);
+  --danger: hsl(9 53% 66%);
+  --warning: hsl(51 35% 50%);
+  --success: hsl(149 34% 54%);
+  --info: hsl(217 59% 67%);
+  /* oklch */
+  --bg-dark: oklch(0.1 0.05 280);
+  --bg: oklch(0.15 0.05 280);
+  --bg-light: oklch(0.2 0.05 280);
+  --text: oklch(0.96 0.1 280);
+  --text-muted: oklch(0.76 0.1 280);
+  --highlight: oklch(0.5 0.1 280);
+  --border: oklch(0.4 0.1 280);
+  --border-muted: oklch(0.3 0.1 280);
+  --primary: oklch(0.76 0.1 280);
+  --secondary: oklch(0.76 0.1 100);
+  --danger: oklch(0.7 0.1 30);
+  --warning: oklch(0.7 0.1 100);
+  --success: oklch(0.7 0.1 160);
+  --info: oklch(0.7 0.1 260);
+}
+body.light {
+  /* hsl (fallback color) */
+  --bg-dark: hsl(234 100% 95%);
+  --bg: hsl(234 100% 100%);
+  --bg-light: hsl(234 100% 100%);
+  --text: hsl(253 100% 10%);
+  --text-muted: hsl(239 33% 36%);
+  --highlight: hsl(235 100% 100%);
+  --border: hsl(236 34% 60%);
+  --border-muted: hsl(236 51% 72%);
+  --primary: hsl(239 33% 36%);
+  --secondary: hsl(53 100% 12%);
+  --danger: hsl(8 40% 42%);
+  --warning: hsl(52 82% 24%);
+  --success: hsl(154 58% 29%);
+  --info: hsl(217 42% 43%);
+  /* oklch */
+  --bg-dark: oklch(0.92 0.05 280);
+  --bg: oklch(0.96 0.05 280);
+  --bg-light: oklch(1 0.05 280);
+  --text: oklch(0.15 0.1 280);
+  --text-muted: oklch(0.4 0.1 280);
+  --highlight: oklch(1 0.1 280);
+  --border: oklch(0.6 0.1 280);
+  --border-muted: oklch(0.7 0.1 280);
+  --primary: oklch(0.4 0.1 280);
+  --secondary: oklch(0.4 0.1 100);
+  --danger: oklch(0.5 0.1 30);
+  --warning: oklch(0.5 0.1 100);
+  --success: oklch(0.5 0.1 160);
+  --info: oklch(0.5 0.1 260);
+}
+
+body {
+  font-family: "Josefin Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode class for html element */
+.dark-mode {
+  /* hsl (fallback color) */
+  --bg-dark: hsl(245 90% 4%);
+  --bg: hsl(242 62% 8%);
+  --bg-light: hsl(239 42% 12%);
+  --text: hsl(235 100% 100%);
+  --text-muted: hsl(235 71% 79%);
+  --highlight: hsl(237 27% 48%);
+  --border: hsl(239 33% 36%);
+  --border-muted: hsl(242 44% 26%);
+  --primary: hsl(235 71% 79%);
+  --secondary: hsl(51 42% 57%);
+  --danger: hsl(9 53% 66%);
+  --warning: hsl(51 35% 50%);
+  --success: hsl(149 34% 54%);
+  --info: hsl(217 59% 67%);
+  /* oklch */
+  --bg-dark: oklch(0.1 0.05 280);
+  --bg: oklch(0.15 0.05 280);
+  --bg-light: oklch(0.2 0.05 280);
+  --text: oklch(0.96 0.1 280);
+  --text-muted: oklch(0.76 0.1 280);
+  --highlight: oklch(0.5 0.1 280);
+  --border: oklch(0.4 0.1 280);
+  --border-muted: oklch(0.3 0.1 280);
+  --primary: oklch(0.76 0.1 280);
+  --secondary: oklch(0.76 0.1 100);
+  --danger: oklch(0.7 0.1 30);
+  --warning: oklch(0.7 0.1 100);
+  --success: oklch(0.7 0.1 160);
+  --info: oklch(0.7 0.1 260);
+}
+
+/* Light mode class for html element */
+.light-mode {
+  /* hsl (fallback color) */
+  --bg-dark: hsl(234 100% 95%);
+  --bg: hsl(234 100% 100%);
+  --bg-light: hsl(234 100% 100%);
+  --text: hsl(253 100% 10%);
+  --text-muted: hsl(239 33% 36%);
+  --highlight: hsl(235 100% 100%);
+  --border: hsl(236 34% 60%);
+  --border-muted: hsl(236 51% 72%);
+  --primary: hsl(239 33% 36%);
+  --secondary: hsl(53 100% 12%);
+  --danger: hsl(8 40% 42%);
+  --warning: hsl(52 82% 24%);
+  --success: hsl(154 58% 29%);
+  --info: hsl(217 42% 43%);
+  /* oklch */
+  --bg-dark: oklch(0.92 0.05 280);
+  --bg: oklch(0.96 0.05 280);
+  --bg-light: oklch(1 0.05 280);
+  --text: oklch(0.15 0.1 280);
+  --text-muted: oklch(0.4 0.1 280);
+  --highlight: oklch(1 0.1 280);
+  --border: oklch(0.6 0.1 280);
+  --border-muted: oklch(0.7 0.1 280);
+  --primary: oklch(0.4 0.1 280);
+  --secondary: oklch(0.4 0.1 100);
+  --danger: oklch(0.5 0.1 30);
+  --warning: oklch(0.5 0.1 100);
+  --success: oklch(0.5 0.1 160);
+  --info: oklch(0.5 0.1 260);
+}
