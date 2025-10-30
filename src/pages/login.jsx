@@ -201,7 +201,11 @@ const Login = () => {
                           />
                         </Form.Group>
 
-                        <Button variant="primary" type="submit" className="btn">
+                        <Button
+                          variant="primary"
+                          type="submit"
+                          className="login-btn"
+                        >
                           Sign In
                         </Button>
                         <div className="text-center mt-3">
@@ -305,7 +309,11 @@ const Login = () => {
                           />
                         </Form.Group>
 
-                        <Button variant="success" type="submit" className="btn">
+                        <Button
+                          variant="success"
+                          type="submit"
+                          className="login-btn"
+                        >
                           Create Account
                         </Button>
                         <div className="text-center mt-3">

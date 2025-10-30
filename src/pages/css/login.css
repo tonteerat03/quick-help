@@ -73,7 +73,7 @@
   margin-left: 10px;
 }
 
-.btn {
+.login-btn {
   padding: 12px 20px;
   border-radius: 8px;
   font-weight: 600;
@@ -83,7 +83,7 @@
   width: 100%;
 }
 
-.btn:hover {
+.login-btn:hover {
   transform: translateY(-1px);
 }
 
