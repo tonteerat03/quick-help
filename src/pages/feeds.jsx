@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import { Button, Dropdown } from "react-bootstrap";
 import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./css/feeds.css";
@@ -9,6 +9,8 @@ const CATEGORY_OPTIONS = ["Most View", "Most Like", "Recent"];
 const Feeds = () => {
   const [selectedCategory, setSelectedCategory] = useState("Most View");
   const [currentUser, setCurrentUser] = useState(null);
+  // Add tag filter state
+  const [tagFilter, setTagFilter] = useState("All");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,8 +20,21 @@ const Feeds = () => {
     }
   }, []);
 
+  // Build unique tag list
+  const TAG_OPTIONS = useMemo(
+    () => [
+      "All",
+      ...Array.from(new Set(MANUAL_DATA.flatMap((m) => m.tags || []))).sort(),
+    ],
+    []
+  );
+
   const sortedFeeds = useMemo(() => {
-    const feeds = [...MANUAL_DATA];
+    // Start with all manuals and apply tag filter first
+    let feeds = [...MANUAL_DATA];
+    if (tagFilter !== "All") {
+      feeds = feeds.filter((m) => (m.tags || []).includes(tagFilter));
+    }
     if (selectedCategory === "Most View") {
       return feeds.sort((a, b) => b.views - a.views);
     }
@@ -31,7 +46,7 @@ const Feeds = () => {
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
-  }, [selectedCategory]);
+  }, [selectedCategory, tagFilter]);
 
   const handleCardClick = (manualId) => {
     navigate(`/manual/${manualId}`);
@@ -57,27 +72,54 @@ const Feeds = () => {
       <div className="home-container">
         <div className="feeds-header">
           <div className="feeds-categories">
-            {CATEGORY_OPTIONS.map((label) => (
-              <Button
-                key={label}
-                type="button"
-                className={
-                  "home-category-btn" +
-                  (selectedCategory === label ? " selected" : "")
-                }
-                onClick={() => setSelectedCategory(label)}
-              >
-                {label}
-              </Button>
-            ))}
+            <div className="filters-group">
+              {CATEGORY_OPTIONS.map((label) => (
+                <Button
+                  key={label}
+                  type="button"
+                  className={
+                    "home-category-btn" +
+                    (selectedCategory === label ? " selected" : "")
+                  }
+                  onClick={() => setSelectedCategory(label)}
+                >
+                  {label}
+                </Button>
+              ))}
+              {/* Tag dropdown */}
+              <Dropdown style={{ marginLeft: "0.5rem" }}>
+                <Dropdown.Toggle
+                  variant="secondary"
+                  className="home-category-btn"
+                >
+                  {tagFilter === "All" ? "Tags" : `Tag: ${tagFilter}`}
+                </Dropdown.Toggle>
+                <Dropdown.Menu
+                  renderOnMount
+                  popperConfig={{ strategy: "fixed" }}
+                  style={{ zIndex: 2000 }}
+                >
+                  {TAG_OPTIONS.map((tag) => (
+                    <Dropdown.Item
+                      key={tag}
+                      active={tagFilter === tag}
+                      onClick={() => setTagFilter(tag)}
+                    >
+                      {tag}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
+
+            <Button
+              className="create-manual-btn"
+              onClick={handleCreateManual}
+              variant="primary"
+            >
+              + Create Manual
+            </Button>
           </div>
-          <Button
-            className="create-manual-btn"
-            onClick={handleCreateManual}
-            variant="primary"
-          >
-            + Create Manual
-          </Button>
         </div>
 
         <div className="home-manuals-grid">

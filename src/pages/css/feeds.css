@@ -17,11 +17,21 @@
 
 .feeds-categories {
   display: flex;
+  align-items: center;
+  justify-content: space-between; /* filters left area vs create button on right */
+  gap: 12px;
+  width: 100%;
+  flex: 1 1 auto;
+}
+
+/* New wrapper for category buttons + tag dropdown to keep them centered */
+.filters-group {
+  display: flex;
   gap: 8px;
   overflow-x: auto;
   padding-bottom: 8px;
-  flex: 1;
-  justify-content: center;
+  flex: 1 1 auto;
+  justify-content: center; /* keep filters centered within available space */
 }
 
 .create-manual-btn {
@@ -149,6 +159,7 @@
   color: var(--text);
   line-height: 1.3;
   display: -webkit-box;
+  line-clamp: 2; /* standard */
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -160,6 +171,7 @@
   line-height: 1.4;
   margin: 0 0 12px 0;
   display: -webkit-box;
+  line-clamp: 2; /* standard */
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -266,7 +278,14 @@
   }
 
   .feeds-categories {
+    flex-direction: column; /* stack filters and button */
+    align-items: stretch;
     justify-content: flex-start;
+    gap: 12px;
+  }
+
+  .filters-group {
+    justify-content: flex-start; /* filters align left on mobile */
   }
 
   .create-manual-btn {
