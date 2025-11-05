@@ -47,6 +47,20 @@ const defaultUsers = [
     isActive: true,
     permissions: ["create_manual", "edit_own_manual", "comment"],
   },
+  {
+    id: 4,
+    username: "tony_smith",
+    email: "tony_smith@gmail.com",
+    password: "user123",
+    role: "user",
+    firstName: "Tony",
+    lastName: "Smith",
+    avatar:
+      "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop&crop=face",
+    joinDate: "2024-03-10T14:20:00Z",
+    isActive: true,
+    permissions: ["create_manual", "edit_own_manual", "comment"],
+  }
 ];
 
 const initializeUsers = () => {
