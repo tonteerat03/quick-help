@@ -51,7 +51,7 @@ const defaultUsers = [
     id: 4,
     username: "tony_smith",
     email: "tony_smith@gmail.com",
-    password: "user123",
+    password: "user1234",
     role: "user",
     firstName: "Tony",
     lastName: "Smith",
