@@ -2,15 +2,15 @@ import { Button, Dropdown } from "react-bootstrap";
 import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./css/feeds.css";
-import { MANUAL_DATA } from "../data/manualdata";
+import { getApprovedManuals } from "../data/manualdata";
 
 const CATEGORY_OPTIONS = ["Most View", "Most Like", "Recent"];
 
 const Feeds = () => {
   const [selectedCategory, setSelectedCategory] = useState("Most View");
   const [currentUser, setCurrentUser] = useState(null);
-  // Add tag filter state
   const [tagFilter, setTagFilter] = useState("All");
+  const [approvedManuals, setApprovedManuals] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,20 +18,23 @@ const Feeds = () => {
     if (user) {
       setCurrentUser(JSON.parse(user));
     }
+    // Load approved manuals
+    setApprovedManuals(getApprovedManuals());
   }, []);
-
-  // Build unique tag list
+  // Build unique tag list from approved manuals
   const TAG_OPTIONS = useMemo(
     () => [
       "All",
-      ...Array.from(new Set(MANUAL_DATA.flatMap((m) => m.tags || []))).sort(),
+      ...Array.from(
+        new Set(approvedManuals.flatMap((m) => m.tags || []))
+      ).sort(),
     ],
-    []
+    [approvedManuals]
   );
 
   const sortedFeeds = useMemo(() => {
-    // Start with all manuals and apply tag filter first
-    let feeds = [...MANUAL_DATA];
+    // Start with approved manuals and apply tag filter first
+    let feeds = [...approvedManuals];
     if (tagFilter !== "All") {
       feeds = feeds.filter((m) => (m.tags || []).includes(tagFilter));
     }
@@ -46,25 +49,17 @@ const Feeds = () => {
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
-  }, [selectedCategory, tagFilter]);
-
+  }, [selectedCategory, tagFilter, approvedManuals]);
   const handleCardClick = (manualId) => {
     navigate(`/manual/${manualId}`);
   };
-
   const handleCreateManual = () => {
     const stored = localStorage.getItem("currentUser");
     if (!stored) {
       navigate(`/login`);
       return;
     }
-    const user = JSON.parse(stored);
-    if (user.role !== "admin") {
-      alert("Only admins can create manuals.");
-      return;
-    }
-    // No dedicated create page exists; send admins to dashboard for now
-    navigate(`/dashboard`);
+    navigate("/create-manual");
   };
 
   return (
