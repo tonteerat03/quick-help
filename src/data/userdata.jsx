@@ -78,8 +78,12 @@ export const getUserByUsername = (username) => {
   return USER_DATA.find((user) => user.username === username);
 };
 
-export const authenticateUser = (email, password) => {
-  const user = getUserByEmail(email);
+export const authenticateUser = (emailOrUsername, password) => {
+  // Try to find user by email first, then by username
+  let user = getUserByEmail(emailOrUsername);
+  if (!user) {
+    user = getUserByUsername(emailOrUsername);
+  }
   if (user && user.password === password && user.isActive) {
     return user;
   }

@@ -166,3 +166,7 @@ body {
     font-size: 12px;
   }
 }
+
+* {
+  scrollbar-width: none;
+}

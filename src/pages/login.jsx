@@ -22,7 +22,10 @@ import "./css/login.css";
 const Login = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("login");
-  const [loginData, setLoginData] = useState({ email: "", password: "" });
+  const [loginData, setLoginData] = useState({
+    emailOrUsername: "",
+    password: "",
+  });
   const [registerData, setRegisterData] = useState({
     username: "",
     email: "",
@@ -38,12 +41,15 @@ const Login = () => {
     setError("");
     setSuccess("");
 
-    if (!loginData.email || !loginData.password) {
+    if (!loginData.emailOrUsername || !loginData.password) {
       setError("Please fill in all fields");
       return;
     }
 
-    const user = authenticateUser(loginData.email, loginData.password);
+    const user = authenticateUser(
+      loginData.emailOrUsername,
+      loginData.password
+    );
     if (user) {
       localStorage.setItem("currentUser", JSON.stringify(user));
       setSuccess("Login successful! Redirecting...");
@@ -55,7 +61,7 @@ const Login = () => {
         }
       }, 1000);
     } else {
-      setError("Invalid email or password");
+      setError("Invalid email/username or password");
     }
   };
 
@@ -140,7 +146,6 @@ const Login = () => {
                     Sign in to your account or create a new one
                   </p>
                 </div>
-
                 {error && (
                   <Alert variant="danger" className="mb-3">
                     {error}
@@ -150,190 +155,155 @@ const Login = () => {
                   <Alert variant="success" className="mb-3">
                     {success}
                   </Alert>
-                )}
-
+                )}{" "}
                 <Tabs
                   activeKey={activeTab}
+                  onSelect={(k) => setActiveTab(k)}
                   className="mb-4 justify-content-center"
                   fill
                 >
-                  {activeTab === "login" && (
-                    <Tab
-                      eventKey="login"
-                      title={<span className="fw-semibold">Login</span>}
-                    >
-                      <Form onSubmit={handleLogin} className="mt-3">
-                        <Form.Group className="mb-3">
-                          <Form.Label className="form-label">Email</Form.Label>
-                          <Form.Control
-                            type="email"
-                            value={loginData.email}
-                            onChange={(e) =>
-                              setLoginData({
-                                ...loginData,
-                                email: e.target.value,
-                              })
-                            }
-                            placeholder="Enter your email"
-                            required
-                            className="form-control"
-                            autoComplete="username"
-                          />
-                        </Form.Group>
+                  <Tab
+                    eventKey="login"
+                    title={<span className="fw-semibold">Login</span>}
+                  >
+                    <Form onSubmit={handleLogin} className="mt-3">
+                      <Form.Group className="mb-3">
+                        <Form.Label className="form-label">
+                          Email or Username
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          value={loginData.emailOrUsername}
+                          onChange={(e) =>
+                            setLoginData({
+                              ...loginData,
+                              emailOrUsername: e.target.value,
+                            })
+                          }
+                          placeholder="Enter your email or username"
+                          required
+                          className="form-control"
+                          autoComplete="username"
+                        />
+                      </Form.Group>
 
-                        <Form.Group className="mb-4">
-                          <Form.Label className="form-label">
-                            Password
-                          </Form.Label>
-                          <Form.Control
-                            type="password"
-                            value={loginData.password}
-                            onChange={(e) =>
-                              setLoginData({
-                                ...loginData,
-                                password: e.target.value,
-                              })
-                            }
-                            placeholder="Enter your password"
-                            required
-                            className="form-control"
-                            autoComplete="current-password"
-                          />
-                        </Form.Group>
+                      <Form.Group className="mb-4">
+                        <Form.Label className="form-label">Password</Form.Label>
+                        <Form.Control
+                          type="password"
+                          value={loginData.password}
+                          onChange={(e) =>
+                            setLoginData({
+                              ...loginData,
+                              password: e.target.value,
+                            })
+                          }
+                          placeholder="Enter your password"
+                          required
+                          className="form-control"
+                          autoComplete="current-password"
+                        />
+                      </Form.Group>
 
-                        <Button
-                          variant="primary"
-                          type="submit"
-                          className="login-btn"
-                        >
-                          Sign In
-                        </Button>
-                        <div className="text-center mt-3">
-                          <Button
-                            variant="link"
-                            className="text-decoration-none fw-semibold"
-                            onClick={() => setActiveTab("register")}
-                            style={{
-                              color: "var(--primary)",
-                              textDecoration: "none",
-                            }}
-                          >
-                            Don't have an account? Register
-                          </Button>
-                        </div>
-                      </Form>
-                    </Tab>
-                  )}
-                  {activeTab === "register" && (
-                    <Tab
-                      eventKey="register"
-                      title={<span className="fw-semibold">Register</span>}
-                    >
-                      <Form onSubmit={handleRegister} className="mt-3">
-                        {/* Removed First Name and Last Name fields */}
-                        <Form.Group className="mb-3">
-                          <Form.Label className="form-label">
-                            Username
-                          </Form.Label>
-                          <Form.Control
-                            type="text"
-                            value={registerData.username}
-                            onChange={(e) =>
-                              setRegisterData({
-                                ...registerData,
-                                username: e.target.value,
-                              })
-                            }
-                            placeholder="Choose a username"
-                            required
-                            className="form-control"
-                            autoComplete="username"
-                          />
-                        </Form.Group>
+                      <Button
+                        variant="primary"
+                        type="submit"
+                        className="login-btn"
+                      >
+                        Sign In
+                      </Button>
+                    </Form>
+                  </Tab>
 
-                        <Form.Group className="mb-3">
-                          <Form.Label className="form-label">Email</Form.Label>
-                          <Form.Control
-                            type="email"
-                            value={registerData.email}
-                            onChange={(e) =>
-                              setRegisterData({
-                                ...registerData,
-                                email: e.target.value,
-                              })
-                            }
-                            placeholder="Enter your email"
-                            required
-                            className="form-control"
-                            autoComplete="email"
-                          />
-                        </Form.Group>
+                  <Tab
+                    eventKey="register"
+                    title={<span className="fw-semibold">Register</span>}
+                  >
+                    <Form onSubmit={handleRegister} className="mt-3">
+                      <Form.Group className="mb-3">
+                        <Form.Label className="form-label">Username</Form.Label>
+                        <Form.Control
+                          type="text"
+                          value={registerData.username}
+                          onChange={(e) =>
+                            setRegisterData({
+                              ...registerData,
+                              username: e.target.value,
+                            })
+                          }
+                          placeholder="Choose a username"
+                          required
+                          className="form-control"
+                          autoComplete="username"
+                        />
+                      </Form.Group>
 
-                        <Form.Group className="mb-3">
-                          <Form.Label className="form-label">
-                            Password
-                          </Form.Label>
-                          <Form.Control
-                            type="password"
-                            value={registerData.password}
-                            onChange={(e) =>
-                              setRegisterData({
-                                ...registerData,
-                                password: e.target.value,
-                              })
-                            }
-                            placeholder="Create a password"
-                            required
-                            className="form-control"
-                            autoComplete="new-password"
-                          />
-                        </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="form-label">Email</Form.Label>
+                        <Form.Control
+                          type="email"
+                          value={registerData.email}
+                          onChange={(e) =>
+                            setRegisterData({
+                              ...registerData,
+                              email: e.target.value,
+                            })
+                          }
+                          placeholder="Enter your email"
+                          required
+                          className="form-control"
+                          autoComplete="email"
+                        />
+                      </Form.Group>
 
-                        <Form.Group className="mb-4">
-                          <Form.Label className="form-label">
-                            Confirm Password
-                          </Form.Label>
-                          <Form.Control
-                            type="password"
-                            value={registerData.confirmPassword}
-                            onChange={(e) =>
-                              setRegisterData({
-                                ...registerData,
-                                confirmPassword: e.target.value,
-                              })
-                            }
-                            placeholder="Confirm your password"
-                            required
-                            className="form-control"
-                            autoComplete="new-password"
-                          />
-                        </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="form-label">Password</Form.Label>
+                        <Form.Control
+                          type="password"
+                          value={registerData.password}
+                          onChange={(e) =>
+                            setRegisterData({
+                              ...registerData,
+                              password: e.target.value,
+                            })
+                          }
+                          placeholder="Create a password"
+                          required
+                          className="form-control"
+                          autoComplete="new-password"
+                        />
+                      </Form.Group>
 
-                        <Button
-                          variant="success"
-                          type="submit"
-                          className="login-btn"
-                        >
-                          Create Account
-                        </Button>
-                        <div className="text-center mt-3">
-                          <Button
-                            variant="link"
-                            className="text-decoration-none fw-semibold"
-                            onClick={() => setActiveTab("login")}
-                            style={{
-                              color: "var(--primary)",
-                              textDecoration: "none",
-                            }}
-                          >
-                            Already have an account? Login
-                          </Button>
-                        </div>
-                      </Form>
-                    </Tab>
-                  )}
+                      <Form.Group className="mb-4">
+                        <Form.Label className="form-label">
+                          Confirm Password
+                        </Form.Label>
+                        <Form.Control
+                          type="password"
+                          value={registerData.confirmPassword}
+                          onChange={(e) =>
+                            setRegisterData({
+                              ...registerData,
+                              confirmPassword: e.target.value,
+                            })
+                          }
+                          placeholder="Confirm your password"
+                          required
+                          className="form-control"
+                          autoComplete="new-password"
+                        />
+                      </Form.Group>
+
+                      <Button
+                        variant="success"
+                        type="submit"
+                        className="login-btn"
+                      >
+                        Create Account
+                      </Button>
+                    </Form>
+                  </Tab>
                 </Tabs>
-
                 <div className="text-center mt-3">
                   <Link
                     to="/feeds"

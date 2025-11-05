@@ -1,9 +1,9 @@
 .login-container {
-  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   background: var(--bg);
+  min-height: 80vh;
 }
 
 .login-card {
@@ -31,6 +31,7 @@
 .nav-tabs {
   border-bottom: 2px solid var(--border);
   margin-bottom: 20px;
+  background-color: var(--bg-light) ;
 }
 
 .nav-tabs .nav-link {
@@ -48,6 +49,7 @@
 .nav-tabs .nav-link.active {
   color: var(--text);
   border-bottom: 2px solid var(--primary);
+  background-color: var(--bg);
 }
 
 .form-control {
@@ -57,8 +59,7 @@
   background: var(--bg-light);
   color: var(--text);
   transition: all 0.2s;
-  margin-left: 10px;
-  width: calc(100% - 10px);
+  width: 100%;
 }
 
 .form-control:focus {
@@ -70,7 +71,6 @@
   font-weight: 600;
   margin-bottom: 8px;
   color: var(--text);
-  margin-left: 10px;
 }
 
 .login-btn {
@@ -154,4 +154,3 @@
     font-size: 0.9rem;
   }
 }
-

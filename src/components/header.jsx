@@ -93,7 +93,7 @@ const Header = () => {
             <Link to="/feeds">Feeds</Link>
           </li>
           <li>
-            <Link to="/contact">Contact</Link>
+            <Link to="/feedback">Feedback</Link>
           </li>
           {currentUser && currentUser.role === "admin" && (
             <li>

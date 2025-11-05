@@ -6,7 +6,7 @@ const Home = () => {
     return ( 
         <div className="flex flex-col items-center justify-center m-70">
             <h1>Quick Search</h1>
-            <input type="text" name="Search" class="input" />
+            <input type="text" name="Search" className="input" />
         </div>
      );
 }
